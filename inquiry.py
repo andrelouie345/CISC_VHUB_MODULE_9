@@ -9,19 +9,26 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 
 
-class Ui_MainWindow(object):
+class Ui_InquiryWindow(object):
     def setupUi(self, MainWindow):
-        MainWindow.setObjectName("MainWindow")
+        MainWindow.setObjectName("InquiryWindow")
         MainWindow.resize(800, 750)
         self.centralwidget = QtWidgets.QWidget(parent=MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.inquiry_widget = QtWidgets.QWidget(parent=self.centralwidget)
         self.inquiry_widget.setGeometry(QtCore.QRect(240, 70, 341, 571))
-        self.inquiry_widget.setStyleSheet("QWidget#inquiry_widget{\n"
+        self.inquiry_widget.setStyleSheet
+        MainWindow.setCentralWidget(self.centralwidget)
+        self.retranslateUi(MainWindow)
+        QtCore.QMetaObject.connectSlotsByName(MainWindow)("QWidget#inquiry_widget{\n"
+                                          
 "    background-color: white;\n"
 "    border-radius: 20px;\n"
 "    border: 1px solid #dddddd;\n"
+
 "}\n"
+
+       
 "")
         self.inquiry_widget.setObjectName("inquiry_widget")
         self.inquiry_header = QtWidgets.QLabel(parent=self.inquiry_widget)
@@ -266,7 +273,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Inquiry"))
         self.inquiry_header.setText(_translate("MainWindow", "New Inquiry"))
         self.label_2.setText(_translate("MainWindow", "Inquiry Type"))
         self.push_acad.setText(_translate("MainWindow", "Academic"))
@@ -289,11 +296,6 @@ class Ui_MainWindow(object):
         self.checkBox_3.setText(_translate("MainWindow", "Urgent"))
 
 
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
-    sys.exit(app.exec())
+
+
+
