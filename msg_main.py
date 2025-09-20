@@ -1,7 +1,7 @@
 import sys
 from PyQt6 import QtCore, QtGui, QtWidgets
 from inquiry import InquiryDialog
-
+from recipient_dialog import Ui_Form
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -242,6 +242,14 @@ class MainApp(QtWidgets.QMainWindow):
         chat_name = item.text()
         self.ui.label_8.setText(f"Chat with {chat_name}")
         self.ui.contact_details.setText(f"Contact: {chat_name}\nStatus: Online\nLast seen: Now")
+    
+    def open_recipient_dialog(self):
+        """Function to open the recipient selection dialog"""
+        dialog = Ui_Form(self)
+        if dialog.exec():
+            print("Recipient Selected!")
+        else:
+            print("Recipient Selection Cancelled")
 
 
 if __name__ == "__main__":
