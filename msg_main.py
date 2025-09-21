@@ -224,6 +224,7 @@ class MainApp(QtWidgets.QMainWindow):
         self.ui.push_group.clicked.connect(lambda: self.filter_chats("group"))
         self.ui.search_recipt.textChanged.connect(self.search_chats)
         self.ui.chat_list.itemClicked.connect(self.on_chat_selected)
+        
 
     def open_inquiry_dialog(self):
         dialog = InquiryDialog(self)

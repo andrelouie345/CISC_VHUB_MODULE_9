@@ -56,7 +56,7 @@ class Ui_InquiryDialog(object):
         self.search_recipt = QtWidgets.QLineEdit()
         self.search_recipt.setPlaceholderText("Enter recipient...")
 
-        # ✅ Use one consistent button name
+        # partial push button no icons yet
         self.btn_select_recipient = QtWidgets.QPushButton("△")
         self.btn_select_recipient.setStyleSheet("""
             QPushButton {
@@ -159,20 +159,22 @@ class InquiryDialog(QtWidgets.QDialog):
 
     def open_recipient_dialog(self):
         """Function to open the recipient selection dialog"""
-        dialog = QtWidgets.QDialog(self)   # real dialog
-        ui = Ui_Form()                     # load recipient form
-        ui.setupUi(dialog)                 # set it up
+        dialog = QtWidgets.QDialog(self)   # create recipient dialog
+        ui = Ui_Form()
+        ui.setupUi(dialog)
 
-        self.setAttribute(QtCore.Qt.WidgetAttribute.WA_TranslucentBackground)
-        self.setFixedSize(420, 500)
-        self.setWindowModality(QtCore.Qt.WindowModality.ApplicationModal)
-        self.setWindowFlags(
+        # ✅ Make recipient dialog borderless and modal
+        dialog.setAttribute(QtCore.Qt.WidgetAttribute.WA_TranslucentBackground)
+        dialog.setWindowModality(QtCore.Qt.WindowModality.ApplicationModal)
+        dialog.setWindowFlags(
             QtCore.Qt.WindowType.FramelessWindowHint |
             QtCore.Qt.WindowType.Dialog
         )
 
         if dialog.exec():
             print("Recipient Selected!")
-            # TODO: extract selected recipient from ui → put in self.ui.search_recipt.setText(...)
+            # Example: set recipient search text from input field
+            self.ui.search_recipt.setText(ui.recipient_search.text())
         else:
             print("Recipient Selection Cancelled")
+
