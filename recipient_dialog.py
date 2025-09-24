@@ -37,7 +37,16 @@ class Ui_Form(object):
                                             "    border: 1px solid #ccc;\n"
                                             "    font-family: \"Segoe UI\", sans-serif;\n"
                                             "}")
+        
+
+
         self.recipient_search.setObjectName("recipient_search")
+        self.recipients = ["Alice", "Bob", "Charlie", "Diana", "Eve","Dion","Earl"]
+
+
+        completer = QtWidgets.QCompleter(self.recipients, self.recipient_search)
+        completer.setCaseSensitivity(QtCore.Qt.CaseSensitivity.CaseInsensitive)
+        self.recipient_search.setCompleter(completer)
 
         self.widget_selector = QtWidgets.QWidget(parent=Form)
         self.widget_selector.setGeometry(QtCore.QRect(10, 80, 371, 281))
