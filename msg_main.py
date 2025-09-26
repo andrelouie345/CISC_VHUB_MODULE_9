@@ -4,9 +4,6 @@ from inquiry import InquiryDialog
 from recipient_dialog import Ui_Form
 
 
-
-
-
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
