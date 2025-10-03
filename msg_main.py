@@ -2,6 +2,7 @@ import sys
 from PyQt6 import QtCore, QtGui, QtWidgets
 from inquiry import InquiryDialog
 from recipient_dialog import Ui_Form
+from sidebar import Sidebar
 
 
 class Ui_MainWindow(object):
@@ -12,9 +13,12 @@ class Ui_MainWindow(object):
 
         self.centralwidget = QtWidgets.QWidget(parent=MainWindow)
 
+        # ===== Sidebar (we won't add widgets here, this will be added dynamically) =====
+        # We'll add the Sidebar widget later in MainApp
+
         # ===== Chat Info Panel =====
         self.chat_info = QtWidgets.QWidget(parent=self.centralwidget)
-        self.chat_info.setGeometry(QtCore.QRect(10, 100, 231, 771))
+        self.chat_info.setGeometry(QtCore.QRect(260, 100, 231, 771))  # Shifted right by ~250px to make room
         self.chat_info.setStyleSheet("""
             QWidget#chat_info {
                 background-color: white;
@@ -126,7 +130,7 @@ class Ui_MainWindow(object):
 
         # ===== Message Widget =====
         self.message_widget = QtWidgets.QWidget(parent=self.centralwidget)
-        self.message_widget.setGeometry(QtCore.QRect(250, 100, 621, 771))
+        self.message_widget.setGeometry(QtCore.QRect(500, 100, 621, 771))  # Shifted right by 250px
         self.message_widget.setObjectName("message_widget")
         self.message_widget.setStyleSheet("""
             QWidget#message_widget {
@@ -165,7 +169,7 @@ class Ui_MainWindow(object):
 
         # ===== Contact Info Panel =====
         self.contact_info = QtWidgets.QWidget(parent=self.centralwidget)
-        self.contact_info.setGeometry(QtCore.QRect(880, 100, 221, 771))
+        self.contact_info.setGeometry(QtCore.QRect(1130, 100, 221, 771))  # Shifted right by 250px
         self.contact_info.setObjectName("contact_info")
         self.contact_info.setStyleSheet("""
             QWidget#contact_info {
@@ -210,12 +214,21 @@ class Ui_MainWindow(object):
         MainWindow.setMenuBar(QtWidgets.QMenuBar(parent=MainWindow))
         MainWindow.setStatusBar(QtWidgets.QStatusBar(parent=MainWindow))
 
+    def add_sidebar(self, sidebar_widget):
+        sidebar_widget.setParent(self.centralwidget)
+        sidebar_widget.setGeometry(QtCore.QRect(0, 100, 250, 771))  # Sidebar position and size
+        sidebar_widget.show()
+
 
 class MainApp(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+
+        # Create and add sidebar
+        self.sidebar = Sidebar()
+        self.ui.add_sidebar(self.sidebar)
 
         # Connect buttons
         self.ui.create_inquiry.clicked.connect(self.open_inquiry_dialog)
@@ -225,7 +238,6 @@ class MainApp(QtWidgets.QMainWindow):
         self.ui.push_group.clicked.connect(lambda: self.filter_chats("group"))
         self.ui.search_recipt.textChanged.connect(self.search_chats)
         self.ui.chat_list.itemClicked.connect(self.on_chat_selected)
-        
 
     def open_inquiry_dialog(self):
         dialog = InquiryDialog(self)
@@ -244,7 +256,7 @@ class MainApp(QtWidgets.QMainWindow):
         chat_name = item.text()
         self.ui.label_8.setText(f"Chat with {chat_name}")
         self.ui.contact_details.setText(f"Contact: {chat_name}\nStatus: Online\nLast seen: Now")
-    
+
     def open_recipient_dialog(self):
         """Function to open the recipient selection dialog"""
         dialog = Ui_Form(self)
