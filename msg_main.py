@@ -10,7 +10,7 @@ class Ui_MainWindow(object):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1400, 914)
         MainWindow.setWindowTitle("Messaging Center")
-        MainWindow.setMinimumSize(1200, 700)
+        MainWindow.setMinimumSize(1980, 1080)
 
         self.centralwidget = QtWidgets.QWidget(parent=MainWindow)
         
