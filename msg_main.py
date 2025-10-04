@@ -3,46 +3,70 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 from inquiry import InquiryDialog
 from recipient_dialog import Ui_Form
 from sidebar import Sidebar
-
+from header import Header
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1124, 914)
+        MainWindow.resize(1400, 914)
         MainWindow.setWindowTitle("Messaging Center")
+        MainWindow.setMinimumSize(1200, 700)
 
         self.centralwidget = QtWidgets.QWidget(parent=MainWindow)
+        
+        # Main layout
+        main_layout = QtWidgets.QVBoxLayout(self.centralwidget)
+        main_layout.setContentsMargins(0, 0, 0, 0)
+        main_layout.setSpacing(0)
 
-        # ===== Sidebar (we won't add widgets here, this will be added dynamically) =====
-        # We'll add the Sidebar widget later in MainApp
+        # ===== Header =====
+        self.header = Header(parent=self.centralwidget)
+        self.header.setFixedHeight(84)
+        main_layout.addWidget(self.header)
+
+        # Content area
+        content_widget = QtWidgets.QWidget()
+        content_layout = QtWidgets.QHBoxLayout(content_widget)
+        content_layout.setContentsMargins(0, 16, 0, 16)
+        content_layout.setSpacing(16)
+
+        # ===== Sidebar placeholder (will be added dynamically) =====
+        self.sidebar_container = QtWidgets.QWidget()
+        self.sidebar_container.setFixedWidth(250)
+        content_layout.addWidget(self.sidebar_container)
 
         # ===== Chat Info Panel =====
-        self.chat_info = QtWidgets.QWidget(parent=self.centralwidget)
-        self.chat_info.setGeometry(QtCore.QRect(260, 100, 231, 771))  # Shifted right by ~250px to make room
+        self.chat_info = QtWidgets.QWidget()
+        self.chat_info.setMinimumWidth(231)
+        self.chat_info.setMaximumWidth(280)
         self.chat_info.setStyleSheet("""
             QWidget#chat_info {
                 background-color: white;
                 border-radius: 16px;
                 border: 1px solid #e0e0e0;
-                padding: 10px;
             }
         """)
         self.chat_info.setObjectName("chat_info")
 
-        self.label_2 = QtWidgets.QLabel("Chats", parent=self.chat_info)
-        self.label_2.setGeometry(QtCore.QRect(10, 0, 91, 61))
-        font = QtGui.QFont("Arial", 18)
-        self.label_2.setFont(font)
+        chat_layout = QtWidgets.QVBoxLayout(self.chat_info)
+        chat_layout.setContentsMargins(10, 10, 10, 10)
+        chat_layout.setSpacing(10)
 
-        self.push_edit = QtWidgets.QPushButton("Edit", parent=self.chat_info)
-        self.push_edit.setGeometry(QtCore.QRect(150, 20, 75, 24))
+        # Chat header
+        chat_header_layout = QtWidgets.QHBoxLayout()
+        self.label_2 = QtWidgets.QLabel("Chats")
+        self.label_2.setFont(QtGui.QFont("Arial", 18))
+        chat_header_layout.addWidget(self.label_2)
+        chat_header_layout.addStretch()
+
+        self.push_edit = QtWidgets.QPushButton("Edit")
         self.push_edit.setStyleSheet("""
             QPushButton {
                 color: black;
                 border: none;
                 border-radius: 5px;
                 font-size: 14px;
-                padding: 4px;
+                padding: 4px 8px;
             }
             QPushButton:hover {
                 background-color: #005a2e;
@@ -52,9 +76,11 @@ class Ui_MainWindow(object):
                 background-color: #002d17;
             }
         """)
+        chat_header_layout.addWidget(self.push_edit)
+        chat_layout.addLayout(chat_header_layout)
 
-        self.search_recipt = QtWidgets.QLineEdit(parent=self.chat_info)
-        self.search_recipt.setGeometry(QtCore.QRect(10, 60, 211, 31))
+        # Search box
+        self.search_recipt = QtWidgets.QLineEdit()
         self.search_recipt.setPlaceholderText("Search conversations...")
         self.search_recipt.setStyleSheet("""
             QLineEdit {
@@ -65,17 +91,16 @@ class Ui_MainWindow(object):
                 font-size: 13px;
             }
         """)
+        chat_layout.addWidget(self.search_recipt)
 
-        self.line = QtWidgets.QFrame(parent=self.chat_info)
-        self.line.setGeometry(QtCore.QRect(0, 90, 231, 16))
+        # Separator
+        self.line = QtWidgets.QFrame()
         self.line.setFrameShape(QtWidgets.QFrame.Shape.HLine)
         self.line.setFrameShadow(QtWidgets.QFrame.Shadow.Sunken)
+        chat_layout.addWidget(self.line)
 
         # Filter buttons
-        self.layoutWidget = QtWidgets.QWidget(parent=self.chat_info)
-        self.layoutWidget.setGeometry(QtCore.QRect(10, 110, 201, 30))
-        self.horizontalLayout = QtWidgets.QHBoxLayout(self.layoutWidget)
-        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
+        filter_layout = QtWidgets.QHBoxLayout()
         button_style = """
             QPushButton {
                 color: black;
@@ -83,7 +108,6 @@ class Ui_MainWindow(object):
                 border-radius: 5px;
                 font-size: 12px;
                 padding: 4px 8px;
-                min-width: 40px;
             }
             QPushButton:hover {
                 background-color: #005a2e;
@@ -95,23 +119,24 @@ class Ui_MainWindow(object):
         """
         self.push_unread = QtWidgets.QPushButton("Unread")
         self.push_unread.setStyleSheet(button_style)
-        self.horizontalLayout.addWidget(self.push_unread)
+        filter_layout.addWidget(self.push_unread)
 
         self.push_all = QtWidgets.QPushButton("All")
         self.push_all.setStyleSheet(button_style)
-        self.horizontalLayout.addWidget(self.push_all)
+        filter_layout.addWidget(self.push_all)
 
         self.push_comm = QtWidgets.QPushButton("Comm")
         self.push_comm.setStyleSheet(button_style)
-        self.horizontalLayout.addWidget(self.push_comm)
+        filter_layout.addWidget(self.push_comm)
 
         self.push_group = QtWidgets.QPushButton("Group")
         self.push_group.setStyleSheet(button_style)
-        self.horizontalLayout.addWidget(self.push_group)
+        filter_layout.addWidget(self.push_group)
+
+        chat_layout.addLayout(filter_layout)
 
         # Chat list
-        self.chat_list = QtWidgets.QListWidget(parent=self.chat_info)
-        self.chat_list.setGeometry(QtCore.QRect(10, 150, 201, 450))
+        self.chat_list = QtWidgets.QListWidget()
         self.chat_list.setStyleSheet("""
             QListWidget {
                 border: none;
@@ -127,28 +152,32 @@ class Ui_MainWindow(object):
         """)
         for i in range(5):
             self.chat_list.addItem(QtWidgets.QListWidgetItem(f"Chat {i+1}"))
+        chat_layout.addWidget(self.chat_list)
+
+        content_layout.addWidget(self.chat_info)
 
         # ===== Message Widget =====
-        self.message_widget = QtWidgets.QWidget(parent=self.centralwidget)
-        self.message_widget.setGeometry(QtCore.QRect(500, 100, 621, 771))  # Shifted right by 250px
+        self.message_widget = QtWidgets.QWidget()
         self.message_widget.setObjectName("message_widget")
         self.message_widget.setStyleSheet("""
             QWidget#message_widget {
                 background-color: white;
                 border-radius: 16px;
                 border: 1px solid #e0e0e0;
-                padding: 10px;
             }
         """)
 
-        self.label_8 = QtWidgets.QLabel("No message found!", parent=self.message_widget)
-        self.label_8.setGeometry(QtCore.QRect(200, 310, 241, 61))
+        message_layout = QtWidgets.QVBoxLayout(self.message_widget)
+        message_layout.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+
+        self.label_8 = QtWidgets.QLabel("No message found!")
         self.label_8.setFont(QtGui.QFont("Arial", 20))
         self.label_8.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        message_layout.addWidget(self.label_8)
 
-        self.create_inquiry = QtWidgets.QPushButton("Create an Inquiry", parent=self.message_widget)
-        self.create_inquiry.setGeometry(QtCore.QRect(200, 370, 231, 51))
+        self.create_inquiry = QtWidgets.QPushButton("Create an Inquiry")
         self.create_inquiry.setObjectName("create_inquiry")
+        self.create_inquiry.setFixedSize(231, 51)
         self.create_inquiry.setStyleSheet("""
             QPushButton#create_inquiry {
                 background-color: #003d1f;
@@ -166,58 +195,65 @@ class Ui_MainWindow(object):
                 background-color: #002d17;
             }
         """)
+        message_layout.addWidget(self.create_inquiry, alignment=QtCore.Qt.AlignmentFlag.AlignCenter)
+
+        content_layout.addWidget(self.message_widget, stretch=1)
 
         # ===== Contact Info Panel =====
-        self.contact_info = QtWidgets.QWidget(parent=self.centralwidget)
-        self.contact_info.setGeometry(QtCore.QRect(1130, 100, 221, 771))  # Shifted right by 250px
+        self.contact_info = QtWidgets.QWidget()
+        self.contact_info.setMinimumWidth(221)
+        self.contact_info.setMaximumWidth(280)
         self.contact_info.setObjectName("contact_info")
         self.contact_info.setStyleSheet("""
             QWidget#contact_info {
                 background-color: white;
                 border-radius: 16px;
                 border: 1px solid #e0e0e0;
-                padding: 10px;
             }
         """)
 
-        self.label_9 = QtWidgets.QLabel("Contact Info", parent=self.contact_info)
-        self.label_9.setGeometry(QtCore.QRect(10, 10, 181, 61))
-        self.label_9.setFont(QtGui.QFont("Arial", 18))
+        contact_layout = QtWidgets.QVBoxLayout(self.contact_info)
+        contact_layout.setContentsMargins(10, 10, 10, 10)
+        contact_layout.setSpacing(10)
 
-        self.line_2 = QtWidgets.QFrame(parent=self.contact_info)
-        self.line_2.setGeometry(QtCore.QRect(0, 60, 221, 16))
+        self.label_9 = QtWidgets.QLabel("Contact Info")
+        self.label_9.setFont(QtGui.QFont("Arial", 18))
+        contact_layout.addWidget(self.label_9)
+
+        self.line_2 = QtWidgets.QFrame()
         self.line_2.setFrameShape(QtWidgets.QFrame.Shape.HLine)
+        contact_layout.addWidget(self.line_2)
 
         self.contact_details = QtWidgets.QLabel(
-            "Select a conversation\nto view contact details",
-            parent=self.contact_info
+            "Select a conversation\nto view contact details"
         )
-        self.contact_details.setGeometry(QtCore.QRect(10, 80, 201, 200))
         self.contact_details.setAlignment(QtCore.Qt.AlignmentFlag.AlignTop)
         self.contact_details.setWordWrap(True)
         self.contact_details.setStyleSheet("color: #666; font-size: 14px;")
+        contact_layout.addWidget(self.contact_details)
+        contact_layout.addStretch()
 
-        # ===== Header =====
-        self.msg_header = QtWidgets.QLabel("Messaging Center", parent=self.centralwidget)
-        self.msg_header.setGeometry(QtCore.QRect(20, 40, 221, 61))
-        self.msg_header.setStyleSheet("""
-            QLabel#msg_header {
-                color: #084924;
-                font-size: 25px;
-                font-weight: bold;
-                background-color: transparent;
-            }
-        """)
-        self.msg_header.setObjectName("msg_header")
+        content_layout.addWidget(self.contact_info)
 
+        main_layout.addWidget(content_widget)
         MainWindow.setCentralWidget(self.centralwidget)
-        MainWindow.setMenuBar(QtWidgets.QMenuBar(parent=MainWindow))
-        MainWindow.setStatusBar(QtWidgets.QStatusBar(parent=MainWindow))
 
     def add_sidebar(self, sidebar_widget):
-        sidebar_widget.setParent(self.centralwidget)
-        sidebar_widget.setGeometry(QtCore.QRect(0, 100, 250, 771))  # Sidebar position and size
-        sidebar_widget.show()
+        # Clear any existing widget in sidebar container
+        layout = self.sidebar_container.layout()
+        if layout is None:
+            layout = QtWidgets.QVBoxLayout(self.sidebar_container)
+            layout.setContentsMargins(0, 0, 0, 0)
+        
+        sidebar_widget.setParent(self.sidebar_container)
+        layout.addWidget(sidebar_widget)
+    
+    def update_sidebar_width(self, is_collapsed):
+        """Update sidebar container width based on collapse state"""
+        if is_collapsed:
+            self.sidebar_container.setFixedWidth(60)  # Collapsed width
+        else:
+            self.sidebar_container.setFixedWidth(250)  # Expanded width
 
 
 class MainApp(QtWidgets.QMainWindow):
@@ -230,6 +266,12 @@ class MainApp(QtWidgets.QMainWindow):
         self.sidebar = Sidebar()
         self.ui.add_sidebar(self.sidebar)
 
+        # Connect sidebar toggle button to update container width
+        self.sidebar.toggle_btn.clicked.connect(self.on_sidebar_toggle)
+
+        # Connect header actions
+        self.connect_header_actions()
+
         # Connect buttons
         self.ui.create_inquiry.clicked.connect(self.open_inquiry_dialog)
         self.ui.push_all.clicked.connect(lambda: self.filter_chats("all"))
@@ -238,6 +280,32 @@ class MainApp(QtWidgets.QMainWindow):
         self.ui.push_group.clicked.connect(lambda: self.filter_chats("group"))
         self.ui.search_recipt.textChanged.connect(self.search_chats)
         self.ui.chat_list.itemClicked.connect(self.on_chat_selected)
+
+    def connect_header_actions(self):
+        """Connect header menu actions to methods"""
+        actions = self.ui.header.profile_menu.actions()
+        for action in actions:
+            if action.text() == "My Profile":
+                action.triggered.connect(self.show_profile)
+            elif action.text() == "Log Out":
+                action.triggered.connect(self.logout)
+
+    def show_profile(self):
+        """Show user profile"""
+        print("Opening profile...")
+        QtWidgets.QMessageBox.information(self, "Profile", "Profile feature coming soon!")
+
+    def logout(self):
+        """Handle logout"""
+        reply = QtWidgets.QMessageBox.question(
+            self,
+            "Logout",
+            "Are you sure you want to logout?",
+            QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No
+        )
+        if reply == QtWidgets.QMessageBox.StandardButton.Yes:
+            print("Logging out...")
+            self.close()
 
     def open_inquiry_dialog(self):
         dialog = InquiryDialog(self)
@@ -264,6 +332,18 @@ class MainApp(QtWidgets.QMainWindow):
             print("Recipient Selected!")
         else:
             print("Recipient Selection Cancelled")
+    
+    def update_sidebar_container(self):
+        """Update the sidebar container width based on sidebar's current state"""
+        self.ui.update_sidebar_width(self.sidebar.is_collapsed)
+    
+    def on_sidebar_toggle(self):
+        """Handle sidebar toggle - check if sidebar is collapsed"""
+        # The sidebar's is_collapsed state gets updated in toggleDrawer
+        # We need to check it after the toggle happens
+        # Use QTimer to check state after the toggle completes
+        from PyQt6.QtCore import QTimer
+        QTimer.singleShot(50, self.update_sidebar_container)
 
 
 if __name__ == "__main__":
