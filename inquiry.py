@@ -36,12 +36,16 @@ class Ui_InquiryDialog(object):
         self.inquiry_header.setStyleSheet("color: #084924; font-size: 20px; font-weight: bold;")
         self.form_layout.addWidget(self.inquiry_header)
 
-        # Inquiry Type Buttons
+        # Inquiry Type Radio Buttons
         self.type_layout = QtWidgets.QGridLayout()
-        self.push_acad = QtWidgets.QPushButton("Academic")
-        self.push_admin = QtWidgets.QPushButton("Administrative")
-        self.push_tech = QtWidgets.QPushButton("Technical")
-        self.push_gen = QtWidgets.QPushButton("General")
+        self.push_acad = QtWidgets.QRadioButton("Academic")
+        self.push_admin = QtWidgets.QRadioButton("Administrative")
+        self.push_tech = QtWidgets.QRadioButton("Technical")
+        self.push_gen = QtWidgets.QRadioButton("General")
+        
+        # Set default selection
+        self.push_gen.setChecked(True)
+        
         self.type_layout.addWidget(self.push_acad, 0, 0)
         self.type_layout.addWidget(self.push_tech, 0, 1)
         self.type_layout.addWidget(self.push_admin, 1, 0)
@@ -81,9 +85,13 @@ class Ui_InquiryDialog(object):
         # Priority
         self.label_priority = QtWidgets.QLabel("Priority Level")
         self.priority_layout = QtWidgets.QHBoxLayout()
-        self.checkBox = QtWidgets.QCheckBox("Normal")
-        self.checkBox_2 = QtWidgets.QCheckBox("High")
-        self.checkBox_3 = QtWidgets.QCheckBox("Urgent")
+        self.checkBox = QtWidgets.QRadioButton("Normal")
+        self.checkBox_2 = QtWidgets.QRadioButton("High")
+        self.checkBox_3 = QtWidgets.QRadioButton("Urgent")
+        
+        # Set default selection
+        self.checkBox.setChecked(True)
+        
         self.priority_layout.addWidget(self.checkBox)
         self.priority_layout.addWidget(self.checkBox_2)
         self.priority_layout.addWidget(self.checkBox_3)
@@ -152,10 +160,13 @@ class InquiryDialog(QtWidgets.QDialog):
 
         # Connect buttons
         self.ui.button_cancel.clicked.connect(self.reject)
-        self.ui.button_create.clicked.connect(self.accept)
+        self.ui.button_create.clicked.connect(self.create_inquiry)
 
         # ✅ Connect recipient selector button
         self.ui.btn_select_recipient.clicked.connect(self.open_recipient_dialog)
+        
+        # Initialize inquiry data
+        self.inquiry_data = None
 
     def open_recipient_dialog(self):
         """Function to open the recipient selection dialog"""
@@ -177,4 +188,62 @@ class InquiryDialog(QtWidgets.QDialog):
             self.ui.search_recipt.setText(ui.recipient_search.text())
         else:
             print("Recipient Selection Cancelled")
+    
+    def create_inquiry(self):
+        """Create inquiry with data from the form"""
+        # Get form data
+        inquiry_type = self.get_selected_inquiry_type()
+        recipient_name = self.ui.search_recipt.text().strip()
+        priority = self.get_selected_priority()
+        subject = self.ui.search_sub.text().strip()
+        message = self.ui.search_msg.text().strip()
+        
+        # Validate required fields
+        if not recipient_name or not subject or not message:
+            QtWidgets.QMessageBox.warning(self, "Validation Error", 
+                                        "Please fill in all required fields (Recipient, Subject, Message)")
+            return
+        
+        # For now, we'll use a default faculty ID (you can enhance this later)
+        faculty_id = 2  # Dr. Maria Santos
+        
+        # Create inquiry data
+        self.inquiry_data = {
+            'student_id': 1,  # Current user (you can get this from parent)
+            'faculty_id': faculty_id,
+            'inquiry_type': inquiry_type,
+            'subject': subject,
+            'description': message,
+            'priority': priority,
+            'status': 'pending'
+        }
+        
+        # Accept the dialog
+        self.accept()
+    
+    def get_inquiry_data(self):
+        """Return the inquiry data for the parent to use"""
+        return self.inquiry_data
+    
+    def get_selected_inquiry_type(self):
+        """Get the selected inquiry type from the buttons"""
+        if self.ui.push_acad.isChecked():
+            return 'academic'
+        elif self.ui.push_admin.isChecked():
+            return 'administrative'
+        elif self.ui.push_tech.isChecked():
+            return 'technical'
+        elif self.ui.push_gen.isChecked():
+            return 'general'
+        else:
+            return 'general'  # Default
+    
+    def get_selected_priority(self):
+        """Get the selected priority from the checkboxes"""
+        if self.ui.checkBox_3.isChecked():  # Urgent
+            return 'urgent'
+        elif self.ui.checkBox_2.isChecked():  # High
+            return 'high'
+        else:  # Normal (default)
+            return 'normal'
 

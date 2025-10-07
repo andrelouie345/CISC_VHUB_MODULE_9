@@ -4,6 +4,7 @@ from inquiry import InquiryDialog
 from recipient_dialog import Ui_Form
 from sidebar import Sidebar
 from header import Header
+from data_manager import DataManager
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -262,6 +263,12 @@ class MainApp(QtWidgets.QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
+        # Initialize data manager for handling all data operations
+        self.data_manager = DataManager()
+        
+        # Set current user (you can change this to any user ID from dummy_data.json)
+        self.current_user_id = 1  # Carlos Fidel Castro
+
         # Create and add sidebar
         self.sidebar = Sidebar()
         self.ui.add_sidebar(self.sidebar)
@@ -280,6 +287,10 @@ class MainApp(QtWidgets.QMainWindow):
         self.ui.push_group.clicked.connect(lambda: self.filter_chats("group"))
         self.ui.search_recipt.textChanged.connect(self.search_chats)
         self.ui.chat_list.itemClicked.connect(self.on_chat_selected)
+        
+        # Load real data from database
+        self.load_chats_from_database()
+        self.load_user_info()
 
     def connect_header_actions(self):
         """Connect header menu actions to methods"""
@@ -310,20 +321,172 @@ class MainApp(QtWidgets.QMainWindow):
     def open_inquiry_dialog(self):
         dialog = InquiryDialog(self)
         if dialog.exec():
-            print("Inquiry Created!")
+            # Get the inquiry data from the dialog
+            inquiry_data = dialog.get_inquiry_data()
+            if inquiry_data:
+                # Create inquiry using data manager
+                created_inquiry = self.data_manager.create_inquiry(inquiry_data)
+                if created_inquiry:
+                    print(f"Inquiry Created! ID: {created_inquiry['id']}")
+                    # Refresh the UI if needed
+                    self.load_chats_from_database()
+                else:
+                    print("Failed to create inquiry")
+            else:
+                print("No inquiry data received")
         else:
             print("Inquiry Cancelled")
 
     def filter_chats(self, filter_type):
+        """Filter conversations based on type (all, unread, comm, group)"""
         print(f"Filtering chats by: {filter_type}")
+        
+        # Clear current chat list
+        self.ui.chat_list.clear()
+        
+        # Get conversations based on filter type
+        user_conversations = []
+        for conv in self.data_manager.data['conversations']:
+            if self.current_user_id in conv.get('participants', []):
+                if filter_type == "all":
+                    user_conversations.append(conv)
+                elif filter_type == "unread":
+                    # Check if there are unread messages in this conversation
+                    has_unread = False
+                    for msg in self.data_manager.data['messages']:
+                        if (msg.get('receiver_id') == self.current_user_id and 
+                            not msg.get('is_read', False) and
+                            ((msg.get('sender_id') in conv.get('participants', []) and 
+                              msg.get('receiver_id') in conv.get('participants', [])))):
+                            has_unread = True
+                            break
+                    if has_unread:
+                        user_conversations.append(conv)
+                elif filter_type == "comm" and conv.get('is_group', False):
+                    user_conversations.append(conv)
+                elif filter_type == "group" and conv.get('is_group', False):
+                    user_conversations.append(conv)
+        
+        # Sort by last activity
+        user_conversations.sort(key=lambda x: x.get('last_activity', ''), reverse=True)
+        
+        # Add filtered conversations to chat list
+        for conv in user_conversations:
+            if conv.get('is_group', False):
+                chat_name = conv.get('group_name', f"Group {conv['id']}")
+            else:
+                other_participant_id = None
+                for participant_id in conv.get('participants', []):
+                    if participant_id != self.current_user_id:
+                        other_participant_id = participant_id
+                        break
+                
+                if other_participant_id:
+                    other_user = self.data_manager.get_user(other_participant_id)
+                    chat_name = other_user.get('name', f"User {other_participant_id}") if other_user else f"User {other_participant_id}"
+                else:
+                    chat_name = f"Chat {conv['id']}"
+            
+            self.ui.chat_list.addItem(chat_name)
 
     def search_chats(self, text):
+        """Search conversations by participant names or group names"""
         print(f"Searching for: {text}")
+        
+        if not text.strip():
+            # If search is empty, show all chats
+            self.load_chats_from_database()
+            return
+        
+        # Clear current chat list
+        self.ui.chat_list.clear()
+        
+        # Search through conversations
+        search_text = text.lower()
+        matching_conversations = []
+        
+        for conv in self.data_manager.data['conversations']:
+            if self.current_user_id in conv.get('participants', []):
+                if conv.get('is_group', False):
+                    # Group conversation
+                    group_name = conv.get('group_name', '').lower()
+                    if search_text in group_name:
+                        matching_conversations.append(conv)
+                else:
+                    # Individual conversation - check other participant's name
+                    other_participant_id = None
+                    for participant_id in conv.get('participants', []):
+                        if participant_id != self.current_user_id:
+                            other_participant_id = participant_id
+                            break
+                    
+                    if other_participant_id:
+                        other_user = self.data_manager.get_user(other_participant_id)
+                        if other_user and search_text in other_user.get('name', '').lower():
+                            matching_conversations.append(conv)
+        
+        # Sort by last activity
+        matching_conversations.sort(key=lambda x: x.get('last_activity', ''), reverse=True)
+        
+        # Add matching conversations to chat list
+        for conv in matching_conversations:
+            if conv.get('is_group', False):
+                chat_name = conv.get('group_name', f"Group {conv['id']}")
+            else:
+                other_participant_id = None
+                for participant_id in conv.get('participants', []):
+                    if participant_id != self.current_user_id:
+                        other_participant_id = participant_id
+                        break
+                
+                if other_participant_id:
+                    other_user = self.data_manager.get_user(other_participant_id)
+                    chat_name = other_user.get('name', f"User {other_participant_id}") if other_user else f"User {other_participant_id}"
+                else:
+                    chat_name = f"Chat {conv['id']}"
+            
+            self.ui.chat_list.addItem(chat_name)
 
     def on_chat_selected(self, item):
+        """Handle when a chat is selected from the list"""
         chat_name = item.text()
-        self.ui.label_8.setText(f"Chat with {chat_name}")
-        self.ui.contact_details.setText(f"Contact: {chat_name}\nStatus: Online\nLast seen: Now")
+        
+        # Find the conversation data
+        conversation = self.get_conversation_by_chat_name(chat_name)
+        
+        if conversation:
+            if conversation.get('is_group', False):
+                # Group conversation
+                self.ui.label_8.setText(f"Group: {chat_name}")
+                self.ui.contact_details.setText(f"Group Chat\nParticipants: {len(conversation.get('participants', []))}\nLast Activity: {conversation.get('last_activity', 'Unknown')}")
+            else:
+                # Individual conversation
+                other_participant_id = None
+                for participant_id in conversation.get('participants', []):
+                    if participant_id != self.current_user_id:
+                        other_participant_id = participant_id
+                        break
+                
+                if other_participant_id:
+                    other_user = self.data_manager.get_user(other_participant_id)
+                    if other_user:
+                        status = other_user.get('status', 'offline')
+                        last_seen = other_user.get('last_seen', 'Unknown')
+                        department = other_user.get('department', 'Unknown')
+                        role = other_user.get('role', 'Unknown')
+                        
+                        self.ui.label_8.setText(f"Chat with {other_user['name']}")
+                        self.ui.contact_details.setText(f"Contact: {other_user['name']}\nRole: {role.title()}\nDepartment: {department}\nStatus: {status.title()}\nLast seen: {last_seen}")
+                    else:
+                        self.ui.label_8.setText(f"Chat with {chat_name}")
+                        self.ui.contact_details.setText(f"Contact: {chat_name}\nStatus: Unknown")
+                else:
+                    self.ui.label_8.setText(f"Chat with {chat_name}")
+                    self.ui.contact_details.setText(f"Contact: {chat_name}\nStatus: Unknown")
+        else:
+            # Fallback for unknown chat
+            self.ui.label_8.setText(f"Chat with {chat_name}")
+            self.ui.contact_details.setText(f"Contact: {chat_name}\nStatus: Online\nLast seen: Now")
 
     def open_recipient_dialog(self):
         """Function to open the recipient selection dialog"""
@@ -344,11 +507,108 @@ class MainApp(QtWidgets.QMainWindow):
         # Use QTimer to check state after the toggle completes
         from PyQt6.QtCore import QTimer
         QTimer.singleShot(50, self.update_sidebar_container)
+    
+    def load_chats_from_database(self):
+        """Load real conversations from the database instead of placeholder data"""
+        # Clear existing chat list
+        self.ui.chat_list.clear()
+        
+        # Get all conversations involving the current user
+        user_conversations = []
+        for conv in self.data_manager.data['conversations']:
+            if self.current_user_id in conv.get('participants', []):
+                user_conversations.append(conv)
+        
+        # Sort conversations by last activity (most recent first)
+        user_conversations.sort(key=lambda x: x.get('last_activity', ''), reverse=True)
+        
+        # Add conversations to the chat list
+        for conv in user_conversations:
+            if conv.get('is_group', False):
+                # Group conversation
+                chat_name = conv.get('group_name', f"Group {conv['id']}")
+            else:
+                # Individual conversation - find the other participant
+                other_participant_id = None
+                for participant_id in conv.get('participants', []):
+                    if participant_id != self.current_user_id:
+                        other_participant_id = participant_id
+                        break
+                
+                if other_participant_id:
+                    other_user = self.data_manager.get_user(other_participant_id)
+                    chat_name = other_user.get('name', f"User {other_participant_id}") if other_user else f"User {other_participant_id}"
+                else:
+                    chat_name = f"Chat {conv['id']}"
+            
+            # Add to chat list
+            self.ui.chat_list.addItem(chat_name)
+    
+    def load_user_info(self):
+        """Load current user information and update header"""
+        current_user = self.data_manager.get_user(self.current_user_id)
+        if current_user:
+            # Update header with current user info
+            # You can modify the header.py to accept user data if needed
+            print(f"Current user: {current_user['name']} ({current_user['role']})")
+    
+    def get_conversation_by_chat_name(self, chat_name):
+        """Find conversation data by chat name"""
+        for conv in self.data_manager.data['conversations']:
+            if conv.get('is_group', False):
+                if conv.get('group_name') == chat_name:
+                    return conv
+            else:
+                # Individual conversation - find the other participant
+                other_participant_id = None
+                for participant_id in conv.get('participants', []):
+                    if participant_id != self.current_user_id:
+                        other_participant_id = participant_id
+                        break
+                
+                if other_participant_id:
+                    other_user = self.data_manager.get_user(other_participant_id)
+                    if other_user and other_user.get('name') == chat_name:
+                        return conv
+        return None
 
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     app.setStyle('Fusion')
+    
+    # Load external QSS stylesheet
+    try:
+        with open("sidebar_styles.qss", "r") as f:
+            app.setStyleSheet(f.read())
+        print("✅ QSS stylesheet loaded successfully")
+    except FileNotFoundError:
+        print("⚠️  sidebar_styles.qss not found, using default styles")
+        # Fallback: Set basic styles to prevent black background
+        app.setStyleSheet("""
+            QMainWindow {
+                background-color: #f8f9fa;
+                color: #333333;
+            }
+            QWidget {
+                background-color: #f8f9fa;
+                color: #333333;
+            }
+        """)
+    except Exception as e:
+        print(f"❌ Error loading QSS: {e}")
+        # Fallback: Set basic styles to prevent black background
+        app.setStyleSheet("""
+            QMainWindow {
+                background-color: #f8f9fa;
+                color: #333333;
+            }
+            QWidget {
+                background-color: #f8f9fa;
+                color: #333333;
+            }
+        """)
+    
     window = MainApp()
     window.show()
     sys.exit(app.exec())
