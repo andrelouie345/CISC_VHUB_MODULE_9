@@ -339,9 +339,12 @@ class MainApp(QtWidgets.QMainWindow):
     
     def on_sidebar_toggle(self):
         """Handle sidebar toggle - check if sidebar is collapsed"""
+
+
         # The sidebar's is_collapsed state gets updated in toggleDrawer
         # We need to check it after the toggle happens
         # Use QTimer to check state after the toggle completes
+        
         from PyQt6.QtCore import QTimer
         QTimer.singleShot(50, self.update_sidebar_container)
 
