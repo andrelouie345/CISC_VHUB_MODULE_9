@@ -184,3 +184,15 @@
 .popup-menu::item:pressed {
     background: rgba(255, 255, 255, 0.1);
 }
+
+/* Main Application Styles */ 
+QMainWindow { 
+    background-color: #f8f9fa; color: #333333; 
+} 
+QWidget { 
+    background-color: #f8f9fa; color: #333333; 
+} 
+/* Ensure all text elements are visible */ 
+QLabel { 
+    background-color: transparent; color: #333333; 
+}

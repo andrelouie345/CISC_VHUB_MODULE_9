@@ -24,7 +24,7 @@ class LauncherDialog(QtWidgets.QDialog):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("CISC Virtual Hub - Welcome")
-        self.setFixedSize(500, 400)
+        self.setFixedSize(600, 400)
         self.setWindowFlags(QtCore.Qt.WindowType.FramelessWindowHint)
         
         # Set up the UI

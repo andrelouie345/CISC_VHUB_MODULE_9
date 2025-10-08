@@ -5,6 +5,7 @@ from recipient_dialog import Ui_Form
 from sidebar import Sidebar
 from header import Header
 from data_manager import DataManager
+from main_chat_widget import MainChatWidget  # ✅ Import your wrapper
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -12,7 +13,7 @@ class Ui_MainWindow(object):
         MainWindow.resize(1400, 914)
         MainWindow.setWindowTitle("Messaging Center")
         MainWindow.setMinimumSize(1980, 1080)
-
+        
         self.centralwidget = QtWidgets.QWidget(parent=MainWindow)
         
         # Main layout
@@ -157,7 +158,7 @@ class Ui_MainWindow(object):
 
         content_layout.addWidget(self.chat_info)
 
-        # ===== Message Widget =====
+     # ===== Message Widget =====
         self.message_widget = QtWidgets.QWidget()
         self.message_widget.setObjectName("message_widget")
         self.message_widget.setStyleSheet("""
@@ -169,13 +170,21 @@ class Ui_MainWindow(object):
         """)
 
         message_layout = QtWidgets.QVBoxLayout(self.message_widget)
-        message_layout.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
 
+        # New recipient label (starts hidden)
+        self.recipient_label = QtWidgets.QLabel()
+        self.recipient_label.setFont(QtGui.QFont("Arial", 18, QtGui.QFont.Weight.Bold))
+        self.recipient_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.recipient_label.setVisible(False)  # hide until user selects someone
+        message_layout.addWidget(self.recipient_label)
+
+        # Default message label
         self.label_8 = QtWidgets.QLabel("No message found!")
         self.label_8.setFont(QtGui.QFont("Arial", 20))
         self.label_8.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         message_layout.addWidget(self.label_8)
 
+        # "Create Inquiry" button
         self.create_inquiry = QtWidgets.QPushButton("Create an Inquiry")
         self.create_inquiry.setObjectName("create_inquiry")
         self.create_inquiry.setFixedSize(231, 51)
@@ -197,8 +206,27 @@ class Ui_MainWindow(object):
             }
         """)
         message_layout.addWidget(self.create_inquiry, alignment=QtCore.Qt.AlignmentFlag.AlignCenter)
+        content_layout.addWidget(self.message_widget)
+        self.message_widget.hide()
+            # ===== Load MainChatWidget into message panel =====
 
-        content_layout.addWidget(self.message_widget, stretch=1)
+        try:
+            
+            # ✅ Create and show chat box widget next to message panel
+            self.chat_box = MainChatWidget(parent=content_widget, chat_name="Welcome Chat")
+            content_layout.addWidget(self.chat_box)
+            # self.chat_box.hide()
+            self.chat_info.setFixedWidth(260)  # or leave it dynamic
+            self.chat_box.show()
+            
+        except Exception as e:
+            print(f"Error loading chat widget: {e}")
+            error_label = QtWidgets.QLabel(f"Failed to load chat: {e}")
+            error_label.setStyleSheet("color: red; font-weight: bold;")
+            content_layout.addWidget(error_label)
+
+
+
 
         # ===== Contact Info Panel =====
         self.contact_info = QtWidgets.QWidget()
@@ -263,6 +291,10 @@ class MainApp(QtWidgets.QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
+        # #reset message panel
+        # self.ui.back_button.clicked.connect(self.reset_message_panel)
+
+
         # Initialize data manager for handling all data operations
         self.data_manager = DataManager()
         
@@ -291,6 +323,7 @@ class MainApp(QtWidgets.QMainWindow):
         # Load real data from database
         self.load_chats_from_database()
         self.load_user_info()
+
 
     def connect_header_actions(self):
         """Connect header menu actions to methods"""
@@ -450,15 +483,22 @@ class MainApp(QtWidgets.QMainWindow):
     def on_chat_selected(self, item):
         """Handle when a chat is selected from the list"""
         chat_name = item.text()
-        
+
+        self.ui.message_widget.hide()
+        self.ui.chat_box.show()
+
         # Find the conversation data
         conversation = self.get_conversation_by_chat_name(chat_name)
-        
+
+        # Update contact details (your existing logic)
         if conversation:
             if conversation.get('is_group', False):
                 # Group conversation
                 self.ui.label_8.setText(f"Group: {chat_name}")
-                self.ui.contact_details.setText(f"Group Chat\nParticipants: {len(conversation.get('participants', []))}\nLast Activity: {conversation.get('last_activity', 'Unknown')}")
+                self.ui.contact_details.setText(
+                    f"Group Chat\nParticipants: {len(conversation.get('participants', []))}\n"
+                    f"Last Activity: {conversation.get('last_activity', 'Unknown')}"
+                )
             else:
                 # Individual conversation
                 other_participant_id = None
@@ -466,7 +506,7 @@ class MainApp(QtWidgets.QMainWindow):
                     if participant_id != self.current_user_id:
                         other_participant_id = participant_id
                         break
-                
+
                 if other_participant_id:
                     other_user = self.data_manager.get_user(other_participant_id)
                     if other_user:
@@ -474,9 +514,15 @@ class MainApp(QtWidgets.QMainWindow):
                         last_seen = other_user.get('last_seen', 'Unknown')
                         department = other_user.get('department', 'Unknown')
                         role = other_user.get('role', 'Unknown')
-                        
+
                         self.ui.label_8.setText(f"Chat with {other_user['name']}")
-                        self.ui.contact_details.setText(f"Contact: {other_user['name']}\nRole: {role.title()}\nDepartment: {department}\nStatus: {status.title()}\nLast seen: {last_seen}")
+                        self.ui.contact_details.setText(
+                            f"Contact: {other_user['name']}\n"
+                            f"Role: {role.title()}\n"
+                            f"Department: {department}\n"
+                            f"Status: {status.title()}\n"
+                            f"Last seen: {last_seen}"
+                        )
                     else:
                         self.ui.label_8.setText(f"Chat with {chat_name}")
                         self.ui.contact_details.setText(f"Contact: {chat_name}\nStatus: Unknown")
@@ -487,6 +533,9 @@ class MainApp(QtWidgets.QMainWindow):
             # Fallback for unknown chat
             self.ui.label_8.setText(f"Chat with {chat_name}")
             self.ui.contact_details.setText(f"Contact: {chat_name}\nStatus: Online\nLast seen: Now")
+
+
+
 
     def open_recipient_dialog(self):
         """Function to open the recipient selection dialog"""
