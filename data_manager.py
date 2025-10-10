@@ -518,6 +518,79 @@ class DataManager:
         return False
     
     # ========================================
+    # CONVERSATION MANAGEMENT FUNCTIONS
+    # ========================================
+    
+    def create_conversation(self, conversation_data: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+        """
+        Add a new conversation to our system.
+        
+        Args:
+            conversation_data: Dictionary containing conversation information (participants, is_group, etc.)
+            
+        Returns:
+            The created conversation data with assigned ID, or None if creation failed
+        """
+        # Generate a new unique ID for this conversation
+        max_id = max([conv.get('id', 0) for conv in self.data['conversations']], default=0)
+        conversation_data['id'] = max_id + 1
+        
+        # Add current timestamp for when this conversation was created
+        conversation_data['created_at'] = self._get_current_timestamp()
+        conversation_data['updated_at'] = self._get_current_timestamp()
+        
+        # Add the new conversation to our list
+        self.data['conversations'].append(conversation_data)
+        
+        # Save the changes to file
+        if self._save_data():
+            return conversation_data
+        else:
+            # If save failed, remove the conversation from memory
+            self.data['conversations'].remove(conversation_data)
+            return None
+    
+    def get_conversation(self, conversation_id: int) -> Optional[Dict[str, Any]]:
+        """
+        Find and retrieve a specific conversation.
+        
+        Args:
+            conversation_id: The unique ID of the conversation to find
+            
+        Returns:
+            The conversation information if found, None if not found
+        """
+        for conversation in self.data['conversations']:
+            if conversation.get('id') == conversation_id:
+                return conversation
+        return None
+    
+    def get_conversations_by_user(self, user_id: int) -> List[Dict[str, Any]]:
+        """
+        Get all conversations involving a specific user.
+        
+        Args:
+            user_id: The ID of the user whose conversations we want
+            
+        Returns:
+            List of all conversations involving this user
+        """
+        user_conversations = []
+        for conversation in self.data['conversations']:
+            if user_id in conversation.get('participants', []):
+                user_conversations.append(conversation)
+        return user_conversations
+    
+    def _get_current_timestamp(self) -> str:
+        """
+        Get current timestamp in ISO format.
+        
+        Returns:
+            Current timestamp as ISO string
+        """
+        return datetime.now().isoformat()
+    
+    # ========================================
     # NOTIFICATION MANAGEMENT FUNCTIONS
     # ========================================
     
@@ -755,11 +828,17 @@ class DataManager:
             'unread_messages': sum(1 for msg in self.data['messages'] if not msg.get('is_read', False)),
             'resolved_inquiries': len([inq for inq in self.data['inquiries'] if inq.get('status') == 'resolved'])
         }
+        
+    def reload_data(self) -> dict:
+        """Reload JSON from disk into memory for realtime updates."""
+        self.data = self._load_data()
+        return self.data
 
 
 # ========================================
 # EXAMPLE USAGE AND TESTING
 # ========================================
+
 
 def example_usage():
     """

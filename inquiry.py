@@ -1,5 +1,5 @@
 from PyQt6 import QtCore, QtWidgets
-from recipient_dialog import Ui_Form   # generated from recipient_dialog.ui
+from recipient_dialog import RecipientDialog   # generated from recipient_dialog.ui
 
 
 # ============================
@@ -169,25 +169,21 @@ class InquiryDialog(QtWidgets.QDialog):
         self.inquiry_data = None
 
     def open_recipient_dialog(self):
-        """Function to open the recipient selection dialog"""
-        dialog = QtWidgets.QDialog(self)   # create recipient dialog
-        ui = Ui_Form()
-        ui.setupUi(dialog)
-
-        # ✅ Make recipient dialog borderless and modal
-        dialog.setAttribute(QtCore.Qt.WidgetAttribute.WA_TranslucentBackground)
-        dialog.setWindowModality(QtCore.Qt.WindowModality.ApplicationModal)
-        dialog.setWindowFlags(
-            QtCore.Qt.WindowType.FramelessWindowHint |
-            QtCore.Qt.WindowType.Dialog
-        )
-
+        print("🧪 Opening recipient dialog...")  # DEBUG LOG
+        dialog = RecipientDialog(self)
+        print("✅ Dialog created")
         if dialog.exec():
-            print("Recipient Selected!")
-            # Example: set recipient search text from input field
-            self.ui.search_recipt.setText(ui.recipient_search.text())
+            selected = dialog.get_selected_recipient()
+            if selected:
+                self.ui.search_recipt.setText(selected['name'])
+                self.selected_recipient = selected
+                print("✅ Recipient selected:", selected)
+            else:
+                QtWidgets.QMessageBox.warning(self, "No Selection", "Please select a recipient.")
         else:
-            print("Recipient Selection Cancelled")
+            print("❌ Recipient dialog canceled")
+
+
     
     def create_inquiry(self):
         """Create inquiry with data from the form"""
