@@ -1,0 +1,455 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>927</width>
+    <height>866</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QWidget" name="inquiry_widget" native="true">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>70</y>
+      <width>501</width>
+      <height>581</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QWidget#inquiry_widget{
+    background-color: white;
+    border-radius: 20px;
+    border: 1px solid #dddddd;
+}
+</string>
+    </property>
+    <widget class="QLabel" name="admin_header">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>301</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Segoe UI</family>
+       <pointsize>-1</pointsize>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">#admin_header {
+    font-family: Segoe UI;
+    font-size: 23px;
+    font-weight: bold;
+    color: #006420;
+    letter-spacing: 1px;
+}
+</string>
+     </property>
+     <property name="text">
+      <string>System Broadcast</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_send">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>190</y>
+       <width>281</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Segoe UI</family>
+       <pointsize>-1</pointsize>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">#label_send {
+    font-family: Segoe UI;
+    font-size: 15px;       /* Slightly smaller than header1 */
+    font-weight: 500;      /* Medium weight for H2 */
+    color: #000000;        /* Matching your header1 color */
+    letter-spacing: 0.5px; /* Subtle spacing for modern look */
+}
+</string>
+     </property>
+     <property name="text">
+      <string>Message Type:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_recipient">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>70</y>
+       <width>91</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Segoe UI</family>
+       <pointsize>-1</pointsize>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">#label_recipient {
+    font-family: Segoe UI;
+    font-size: 15px;       /* Slightly smaller than header1 */
+    font-weight: 500;      /* Medium weight for H2 */
+    color: #000000;        /* Matching your header1 color */
+    letter-spacing: 0.5px; /* Subtle spacing for modern look */
+}
+</string>
+     </property>
+     <property name="text">
+      <string>Recipients:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_subject">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>280</y>
+       <width>91</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Segoe UI</family>
+       <pointsize>-1</pointsize>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">#label_subject {
+    font-family: Segoe UI;
+    font-size: 15px;       /* Slightly smaller than header1 */
+    font-weight: 500;      /* Medium weight for H2 */
+    color: #000000;        /* Matching your header1 color */
+    letter-spacing: 0.5px; /* Subtle spacing for modern look */
+}
+</string>
+     </property>
+     <property name="text">
+      <string>Subject:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_6">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>370</y>
+       <width>131</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Message:</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="checkBox_6">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>530</y>
+       <width>161</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Schedule send</string>
+     </property>
+    </widget>
+    <widget class="Line" name="line">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>50</y>
+       <width>781</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="line_role">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>230</y>
+       <width>451</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">#line_role {
+    background-color: #ffffff;
+    border: 1px solid #dcdcdc;
+    border-radius: 6px;        /* Slightly rounded corners */
+    padding: 6px 10px;         /* Comfortable inner spacing */
+    font-family: &quot;Montserrat&quot;; /* Modern font */
+    font-size: 14px;
+    color: #333333;
+}
+
+#line_role:focus {
+    border: 1px solid #006420; /* Highlight border on focus */
+    background-color: #f9f9f9; /* Slightly lighter background */
+}
+
+#line_role:hover {
+    border: 1px solid #b6b6b6; /* Subtle hover effect */
+}
+</string>
+     </property>
+     <item>
+      <property name="text">
+       <string>General Announcements</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>System Maintenance</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Emergency Alert</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>System Update</string>
+      </property>
+     </item>
+    </widget>
+    <widget class="QPlainTextEdit" name="text_edit_subject">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>320</y>
+       <width>451</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">#text_edit_subject {
+    background-color: #ffffff;
+    border: 1px solid #dcdcdc;
+    border-radius: 6px;        /* Slightly rounded corners */
+    padding: 6px 10px;         /* Comfortable inner spacing */
+    font-family: &quot;Montserrat&quot;, sans-serif; /* Modern font */
+    font-size: 14px;
+    color: #333333;
+}
+
+#text_edit_subject:focus {
+    border: 1px solid #006420; /* Highlight border on focus */
+    background-color: #f9f9f9; /* Slightly lighter background */
+}
+
+#text_edit_subject:hover {
+    border: 1px solid #b6b6b6; /* Subtle hover effect */
+}
+</string>
+     </property>
+    </widget>
+    <widget class="QPlainTextEdit" name="text_edit_message">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>410</y>
+       <width>451</width>
+       <height>101</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">#text_edit_message {
+    background-color: #ffffff;
+    border: 1px solid #dcdcdc;
+    border-radius: 6px;        /* Slightly rounded corners */
+    padding: 6px 10px;         /* Comfortable inner spacing */
+    font-family: &quot;Montserrat&quot;, sans-serif; /* Modern font */
+    font-size: 14px;
+    color: #333333;
+}
+
+#text_edit_message:focus {
+    border: 1px solid #006420; /* Highlight border on focus */
+    background-color: #f9f9f9; /* Slightly lighter background */
+}
+
+#text_edit_message:hover {
+    border: 1px solid #b6b6b6; /* Subtle hover effect */
+}
+</string>
+     </property>
+    </widget>
+    <widget class="QWidget" name="">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>111</y>
+       <width>151</width>
+       <height>81</height>
+      </rect>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QCheckBox" name="checkBox">
+        <property name="text">
+         <string>All Users</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="checkBox_2">
+        <property name="text">
+         <string>Faculty Only</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+    <widget class="QWidget" name="">
+     <property name="geometry">
+      <rect>
+       <x>330</x>
+       <y>110</y>
+       <width>141</width>
+       <height>81</height>
+      </rect>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <widget class="QCheckBox" name="checkBox_3">
+        <property name="text">
+         <string>Students Only</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="checkBox_7">
+        <property name="text">
+         <string>Staff Only</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+    <widget class="QWidget" name="">
+     <property name="geometry">
+      <rect>
+       <x>220</x>
+       <y>530</y>
+       <width>248</width>
+       <height>37</height>
+      </rect>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QPushButton" name="btn_cancel">
+        <property name="styleSheet">
+         <string notr="true">#btn_cancel {
+    background-color: #ffffff;      /* Base color: plain white */
+    color: #333333;                 /* Text color */
+    border: none;                   /* No border for clean look */
+    border-radius: 10px;            /* Slightly rounded corners */
+    padding: 8px 22px;              /* Comfortable padding */
+    font-family: Segoe UI; /* Modern font */
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;                /* Pointer on hover */
+    transition: all 0.25s ease;     /* Smooth transition */
+}
+
+#btn_cancel:hover {
+    background-color: red;      /* Green on hover */
+    color: #ffffff;                 /* White text on hover */
+}
+
+#btn_cancel:pressed {
+    background-color: #8B0000;      /* Darker green when pressed */
+    color: #ffffff;
+}
+</string>
+        </property>
+        <property name="text">
+         <string>Cancel</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btn_broadcast">
+        <property name="styleSheet">
+         <string notr="true">#btn_broadcast {
+    background-color: #ffffff;      /* Base color: plain white */
+    color: #333333;                 /* Text color */
+    border: none;                   /* No border for clean look */
+    border-radius: 10px;            /* Slightly rounded corners */
+    padding: 8px 22px;              /* Comfortable padding */
+    font-family: Segoe UI; /* Modern font */
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;                /* Pointer on hover */
+    transition: all 0.25s ease;     /* Smooth transition */
+}
+
+#btn_broadcast:hover {
+    background-color: #006420;      /* Green on hover */
+    color: #ffffff;                 /* White text on hover */
+}
+
+#btn_broadcast:pressed {
+    background-color: #004d18;      /* Darker green when pressed */
+    color: #ffffff;
+}
+</string>
+        </property>
+        <property name="text">
+         <string>Submit Broadcast</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>927</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

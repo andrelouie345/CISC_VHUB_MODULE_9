@@ -1,0 +1,502 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1002</width>
+    <height>886</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QWidget" name="msg_widget" native="true">
+   <property name="geometry">
+    <rect>
+     <x>140</x>
+     <y>50</y>
+     <width>581</width>
+     <height>731</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">#msg_widget {
+    background-color: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #dcdcdc;
+}</string>
+   </property>
+   <widget class="QLabel" name="org_header1">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>10</y>
+      <width>301</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#org_header1 {
+    font-family: Segoe UI;
+    font-size: 23px;
+    font-weight: bold;
+    color: #006420;
+    letter-spacing: 1px;
+}
+</string>
+    </property>
+    <property name="text">
+     <string>Message Details</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_from">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>60</y>
+      <width>151</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#label_from {
+    font-family: Segoe UI;
+    font-size: 15px;       /* Slightly smaller than header1 */
+    font-weight: 500;      /* Medium weight for H2 */
+    color: #000000;        /* Matching your header1 color */
+    letter-spacing: 0.5px; /* Subtle spacing for modern look */
+}
+</string>
+    </property>
+    <property name="text">
+     <string>From:</string>
+    </property>
+   </widget>
+   <widget class="QToolButton" name="close_btn">
+    <property name="geometry">
+     <rect>
+      <x>520</x>
+      <y>10</y>
+      <width>31</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>x</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_to">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>100</y>
+      <width>141</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#label_to {
+    font-family: Segoe UI;
+    font-size: 15px;       /* Slightly smaller than header1 */
+    font-weight: 500;      /* Medium weight for H2 */
+    color: #000000;        /* Matching your header1 color */
+    letter-spacing: 0.5px; /* Subtle spacing for modern look */
+}
+</string>
+    </property>
+    <property name="text">
+     <string>To:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_priority">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>180</y>
+      <width>151</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#label_priority {
+    font-family: Segoe UI;
+    font-size: 15px;       /* Slightly smaller than header1 */
+    font-weight: 500;      /* Medium weight for H2 */
+    color: #000000;        /* Matching your header1 color */
+    letter-spacing: 0.5px; /* Subtle spacing for modern look */
+}
+</string>
+    </property>
+    <property name="text">
+     <string>Priority </string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_status">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>220</y>
+      <width>151</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#label_status{
+    font-family: Segoe UI;
+    font-size: 15px;       /* Slightly smaller than header1 */
+    font-weight: 500;      /* Medium weight for H2 */
+    color: #000000;        /* Matching your header1 color */
+    letter-spacing: 0.5px; /* Subtle spacing for modern look */
+}
+</string>
+    </property>
+    <property name="text">
+     <string>Status:</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_cancel">
+    <property name="geometry">
+     <rect>
+      <x>380</x>
+      <y>680</y>
+      <width>81</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#btn_cancel {
+    
+    color: #c62828;              /* Red text color */
+    border: 1.3px solid;
+    border-radius: 8px;          /* Rounded corners */
+    padding: 4px 12px;           /* Reduced padding for better fit */
+    font-family: &quot;Segoe UI&quot;;     /* Modern font */
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.2s ease;   /* Smooth hover transition */
+}
+
+#btn_cancel:hover {
+    background-color: #c62828;  /* Red hover background */
+    color: #ffffff;             /* White text on hover */
+}
+
+#btn_cancel:pressed {
+    background-color: #8e1c1c;  /* Darker red when pressed */
+    border-color: #8e1c1c;
+}
+</string>
+    </property>
+    <property name="text">
+     <string>CANCEL</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_ok">
+    <property name="geometry">
+     <rect>
+      <x>470</x>
+      <y>680</y>
+      <width>81</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#btn_ok {
+    background-color: #ffffff;   /* Button base color */
+    color: #006420;              /* Text color */
+    border: 1.3px solid;   /* Border color */
+    border-radius: 8px;          /* Rounded corners */
+    padding: 6px 20px;           /* Comfortable padding */
+    font-family: Segoe UI;   /* Modern font */
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.2s ease;   /* Smooth hover transition */
+}
+
+#btn_ok:hover {
+    background-color: #006420;  /* Hover background */
+    color: #ffffff;             /* Text color on hover */
+}
+
+#btn_ok:pressed {
+    background-color: #004d18;  /* Darker shade when pressed */
+    border-color: #004d18;
+}
+</string>
+    </property>
+    <property name="text">
+     <string>REPLY</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_subject">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>140</y>
+      <width>141</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#label_subject{
+    font-family: Segoe UI;
+    font-size: 15px;       /* Slightly smaller than header1 */
+    font-weight: 500;      /* Medium weight for H2 */
+    color: #000000;        /* Matching your header1 color */
+    letter-spacing: 0.5px; /* Subtle spacing for modern look */
+}
+</string>
+    </property>
+    <property name="text">
+     <string>Subject</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_date">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>260</y>
+      <width>151</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#label_date{
+    font-family: Segoe UI;
+    font-size: 15px;       /* Slightly smaller than header1 */
+    font-weight: 500;      /* Medium weight for H2 */
+    color: #000000;        /* Matching your header1 color */
+    letter-spacing: 0.5px; /* Subtle spacing for modern look */
+}
+</string>
+    </property>
+    <property name="text">
+     <string>Date:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_message">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>300</y>
+      <width>301</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#label_message {
+    font-family: Segoe UI;
+    font-size: 15px;
+	font-weight:bold;
+    color: #006420;
+    letter-spacing: 1px;
+}
+</string>
+    </property>
+    <property name="text">
+     <string>Message :</string>
+    </property>
+   </widget>
+   <widget class="QPlainTextEdit" name="text_edit_reply">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>520</y>
+      <width>521</width>
+      <height>151</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#text_edit_reply {
+    background-color: #ffffff;
+    border: 1px solid #dcdcdc;
+    border-radius: 6px;        /* Slightly rounded corners */
+    padding: 6px 10px;         /* Comfortable inner spacing */
+    font-family: &quot;Montserrat&quot;; /* Modern font */
+    font-size: 14px;
+    color: #333333;
+}
+
+#text_edit_reply:focus {
+    border: 1px solid #006420; /* Highlight border on focus */
+    background-color: #f9f9f9; /* Slightly lighter background */
+}
+
+#text_edit_reply:hover {
+    border: 1px solid #b6b6b6; /* Subtle hover effect */
+}
+</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_reply">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>480</y>
+      <width>301</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#label_reply{
+    font-family: Segoe UI;
+    font-size: 15px;
+	font-weight:bold;
+    color: #006420;
+    letter-spacing: 1px;
+}
+</string>
+    </property>
+    <property name="text">
+     <string>Reply</string>
+    </property>
+   </widget>
+   <widget class="Line" name="line">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>80</y>
+      <width>421</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="Line" name="line_2">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>120</y>
+      <width>421</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="Line" name="line_3">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>160</y>
+      <width>421</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="Line" name="line_4">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>200</y>
+      <width>421</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="Line" name="line_5">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>240</y>
+      <width>421</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="Line" name="line_6">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>280</y>
+      <width>421</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="QToolButton" name="close_btn_2">
+    <property name="geometry">
+     <rect>
+      <x>330</x>
+      <y>680</y>
+      <width>31</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>file</string>
+    </property>
+   </widget>
+   <widget class="QToolButton" name="close_btn_3">
+    <property name="geometry">
+     <rect>
+      <x>290</x>
+      <y>680</y>
+      <width>31</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>fwd</string>
+    </property>
+   </widget>
+   <widget class="QFrame" name="msg_frame">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>340</y>
+      <width>521</width>
+      <height>141</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#msg_frame {
+    background-color: #ffffff;
+    border: 1px solid #dcdcdc;
+    border-radius: 6px;        /* Slightly rounded corners */
+    padding: 10px 12px;        /* Comfortable inner spacing for messages */
+    font-family: &quot;Montserrat&quot;; /* Modern font */
+    font-size: 14px;
+    color: #333333;
+}
+
+#msg_frame:focus {
+    border: 1px solid #006420; /* Highlight border on focus */
+    background-color: #f9f9f9; /* Slightly lighter background */
+}
+
+#msg_frame:hover {
+    border: 1px solid #b6b6b6; /* Subtle hover effect */
+}
+</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
