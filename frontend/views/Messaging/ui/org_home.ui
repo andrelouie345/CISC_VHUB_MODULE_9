@@ -1,0 +1,598 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1285</width>
+    <height>1105</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">
+#btn_pend {
+    background-color: #ffffff;      /* Base color: plain white */
+    color: #333333;                 /* Text color */
+    border: 1px solid;              /* Added border */
+    border-radius: 10px;            /* Slightly rounded corners */
+    padding: 8px 22px;              /* Comfortable padding */
+    font-family: Segoe UI;          /* Modern font */
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;                /* Pointer on hover */
+    transition: all 0.25s ease;     /* Smooth transition */
+}
+
+#btn_pend:hover {
+    background-color: #006420;      /* Green on hover */
+    color: #ffffff;                 /* White text on hover */
+}
+
+#btn_pend:pressed {
+    background-color: #004d18;      /* Darker green when pressed */
+    color: #ffffff;
+}
+```</string>
+  </property>
+  <widget class="QWidget" name="org_header" native="true">
+   <property name="geometry">
+    <rect>
+     <x>130</x>
+     <y>40</y>
+     <width>791</width>
+     <height>151</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">#org_header {
+    background-color: #006420;
+    border: 1px solid #dcdcdc;
+    border-radius: 6px;        /* Slightly rounded corners */
+    padding: 8px 12px;         /* Comfortable inner spacing */
+    font-family: &quot;Montserrat&quot;; /* Modern font */
+    font-size: 14px;
+    color: #333333;
+}
+
+#org_header:focus {
+    border: 1px solid #006420; /* Highlight border on focus */
+    background-color: #f9f9f9; /* Slightly lighter background */
+}
+
+#org_header:hover {
+    border: 1px solid #b6b6b6; /* Subtle hover effect */
+}
+</string>
+   </property>
+   <widget class="QLabel" name="label_crit">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>20</y>
+      <width>431</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#label_crit {
+    font-family: Segoe UI;
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    letter-spacing: 1px;
+}
+</string>
+    </property>
+    <property name="text">
+     <string>Internal Messaging and Inquiry center</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_header1">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>60</y>
+      <width>431</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#label_header1 {
+    font-family: Segoe UI;
+    font-size: 13px;
+    color: white;
+    letter-spacing: 1px;
+}
+</string>
+    </property>
+    <property name="text">
+     <string>Student Organization * Officer View</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QWidget" name="org_total" native="true">
+   <property name="geometry">
+    <rect>
+     <x>130</x>
+     <y>210</y>
+     <width>241</width>
+     <height>151</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">#org_total {
+    background-color: #ffffff;
+    border: 1px solid #dcdcdc;
+    border-radius: 6px;        /* Slightly rounded corners */
+    padding: 8px 12px;         /* Comfortable inner spacing */
+    font-family: &quot;Montserrat&quot;; /* Modern font */
+    font-size: 14px;
+    color: #333333;
+}
+
+#org_total:focus {
+    border: 1px solid #006420; /* Highlight border on focus */
+    background-color: #f9f9f9; /* Slightly lighter background */
+}
+
+#org_total:hover {
+    border: 1px solid #b6b6b6; /* Subtle hover effect */
+}
+</string>
+   </property>
+   <widget class="QLabel" name="label_num_pend">
+    <property name="geometry">
+     <rect>
+      <x>90</x>
+      <y>60</y>
+      <width>81</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#label_num_pend{
+    font-family: Segoe UI;
+    font-size: 30px;
+    font-weight: bold;
+    color: #000000;
+    letter-spacing: 1px;
+}
+</string>
+    </property>
+    <property name="text">
+     <string>23</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="org_total_2">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>10</y>
+      <width>171</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#org_total_2{
+    font-family: Segoe UI;
+    font-size: 15px;
+    font-weight: bold;
+    color: #006420;
+    letter-spacing: 1px;
+}
+</string>
+    </property>
+    <property name="text">
+     <string>TOTAL MESSAGES</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QWidget" name="org_pend" native="true">
+   <property name="geometry">
+    <rect>
+     <x>400</x>
+     <y>210</y>
+     <width>261</width>
+     <height>151</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">#org_pend {
+    background-color: #ffffff;
+    border: 1px solid #dcdcdc;
+    border-radius: 6px;        /* Slightly rounded corners */
+    padding: 8px 12px;         /* Comfortable inner spacing */
+    font-family: &quot;Montserrat&quot;; /* Modern font */
+    font-size: 14px;
+    color: #333333;
+}
+
+#org_pend:focus {
+    border: 1px solid #006420; /* Highlight border on focus */
+    background-color: #f9f9f9; /* Slightly lighter background */
+}
+
+#org_pend:hover {
+    border: 1px solid #b6b6b6; /* Subtle hover effect */
+}
+</string>
+   </property>
+   <widget class="QLabel" name="org_pend1">
+    <property name="geometry">
+     <rect>
+      <x>90</x>
+      <y>10</y>
+      <width>171</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#org_pend1 {
+    font-family: Segoe UI;
+    font-size: 15px;
+    font-weight: bold;
+    color: #006420;
+    letter-spacing: 1px;
+}
+</string>
+    </property>
+    <property name="text">
+     <string>PENDING</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_num_pend_2">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>60</y>
+      <width>81</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#label_num_pend_2{
+    font-family: Segoe UI;
+    font-size: 30px;
+    font-weight: bold;
+    color: #000000;
+    letter-spacing: 1px;
+}
+</string>
+    </property>
+    <property name="text">
+     <string>17</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QWidget" name="org_reply" native="true">
+   <property name="geometry">
+    <rect>
+     <x>690</x>
+     <y>210</y>
+     <width>231</width>
+     <height>151</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">#org_reply {
+    background-color: #ffffff;
+    border: 1px solid #dcdcdc;
+    border-radius: 6px;        /* Slightly rounded corners */
+    padding: 8px 12px;         /* Comfortable inner spacing */
+    font-family: &quot;Montserrat&quot;; /* Modern font */
+    font-size: 14px;
+    color: #333333;
+}
+
+#org_reply:focus {
+    border: 1px solid #006420; /* Highlight border on focus */
+    background-color: #f9f9f9; /* Slightly lighter background */
+}
+
+#org_reply:hover {
+    border: 1px solid #b6b6b6; /* Subtle hover effect */
+}
+</string>
+   </property>
+   <widget class="QLabel" name="org_reply1">
+    <property name="geometry">
+     <rect>
+      <x>80</x>
+      <y>10</y>
+      <width>171</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#org_reply1 {
+    font-family: Segoe UI;
+    font-size: 15px;
+    font-weight: bold;
+    color: #006420;
+    letter-spacing: 1px;
+}
+</string>
+    </property>
+    <property name="text">
+     <string>REPLIED</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_num_reply">
+    <property name="geometry">
+     <rect>
+      <x>90</x>
+      <y>60</y>
+      <width>81</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#label_num_reply{
+    font-family: Segoe UI;
+    font-size: 30px;
+    font-weight: bold;
+    color: #000000;
+    letter-spacing: 1px;
+}
+</string>
+    </property>
+    <property name="text">
+     <string>67</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QPushButton" name="btn_org">
+   <property name="geometry">
+    <rect>
+     <x>130</x>
+     <y>380</y>
+     <width>191</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">#btn_org {
+    background-color: #ffffff;      /* Base color: plain white */
+    color: #333333;                 /* Text color */
+    border: 1px solid;              /* Added border */
+    border-radius: 10px;            /* Slightly rounded corners */
+    padding: 8px 22px;              /* Comfortable padding */
+    font-family: Segoe UI;          /* Modern font */
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;                /* Pointer on hover */
+    transition: all 0.25s ease;     /* Smooth transition */
+}
+
+#btn_org:hover {
+    background-color: #006420;      /* Green on hover */
+    color: #ffffff;                 /* White text on hover */
+}
+
+#btn_org:pressed {
+    background-color: #004d18;      /* Darker green when pressed */
+    color: #ffffff;
+}
+</string>
+   </property>
+   <property name="text">
+    <string>New Messages</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btn_all">
+   <property name="geometry">
+    <rect>
+     <x>330</x>
+     <y>380</y>
+     <width>91</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">#btn_all {
+    background-color: #ffffff;      /* Base color: plain white */
+    color: #333333;                 /* Text color */
+    border: none;                   /* No border for clean look */
+    border-radius: 10px;            /* Slightly rounded corners */
+  	border: 1px solid; 
+    padding: 8px 22px;              /* Comfortable padding */
+    font-family: Segoe UI; /* Modern font */
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;                /* Pointer on hover */
+    transition: all 0.25s ease;     /* Smooth transition */
+}
+
+#btn_all:hover {
+    background-color: #006420;      /* Green on hover */
+    color: #ffffff;                 /* White text on hover */
+}
+
+#btn_all:pressed {
+    background-color: #004d18;      /* Darker green when pressed */
+    color: #ffffff;
+}
+</string>
+   </property>
+   <property name="text">
+    <string>All</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btn_pend">
+   <property name="geometry">
+    <rect>
+     <x>430</x>
+     <y>380</y>
+     <width>101</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Pending</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btn_reply">
+   <property name="geometry">
+    <rect>
+     <x>540</x>
+     <y>380</y>
+     <width>91</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">#btn_reply {
+    background-color: #ffffff;      /* Base color: plain white */
+    color: #333333;                 /* Text color */
+    border: 1px solid;              /* Added border */
+    border-radius: 10px;            /* Slightly rounded corners */
+    padding: 8px 22px;              /* Comfortable padding */
+    font-family: Segoe UI;          /* Modern font */
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;                /* Pointer on hover */
+    transition: all 0.25s ease;     /* Smooth transition */
+}
+
+#btn_reply:hover {
+    background-color: #006420;      /* Green on hover */
+    color: #ffffff;                 /* White text on hover */
+}
+
+#btn_reply:pressed {
+    background-color: #004d18;      /* Darker green when pressed */
+    color: #ffffff;
+}
+</string>
+   </property>
+   <property name="text">
+    <string>Replied</string>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="combo_prio">
+   <property name="geometry">
+    <rect>
+     <x>640</x>
+     <y>380</y>
+     <width>101</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">#combo_prio {
+    background-color: #ffffff;
+    border: 1px solid #dcdcdc;
+    border-radius: 6px;        /* Slightly rounded corners */
+    padding: 8px 12px;         /* Comfortable inner spacing */
+    font-family: &quot;Montserrat&quot;; /* Modern font */
+    font-size: 14px;
+    color: #333333;
+}
+
+#combo_prio:focus {
+    border: 1px solid #006420; /* Highlight border on focus */
+    background-color: #f9f9f9; /* Slightly lighter background */
+}
+
+#combo_prio:hover {
+    border: 1px solid #b6b6b6; /* Subtle hover effect */
+}
+</string>
+   </property>
+   <item>
+    <property name="text">
+     <string>Priority</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>New Item</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>New Item</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>New Item</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QWidget" name="widget_main" native="true">
+   <property name="geometry">
+    <rect>
+     <x>130</x>
+     <y>420</y>
+     <width>791</width>
+     <height>591</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">#widget_main {
+    background-color: #ffffff;
+    border: 1px solid #dcdcdc;
+    border-radius: 6px;        /* Slightly rounded corners */
+    padding: 8px 12px;         /* Comfortable inner spacing */
+    font-family: &quot;Montserrat&quot;; /* Modern font */
+    font-size: 14px;
+    color: #333333;
+}
+
+#widget_main:focus {
+    border: 1px solid #006420; /* Highlight border on focus */
+    background-color: #f9f9f9; /* Slightly lighter background */
+}
+
+#widget_main:hover {
+    border: 1px solid #b6b6b6; /* Subtle hover effect */
+}
+</string>
+   </property>
+   <widget class="QLabel" name="org_label">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>0</y>
+      <width>231</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#org_label {
+    font-family: Segoe UI;
+    font-size: 18px;
+    font-weight: bold;
+    color: #006420;
+    letter-spacing: 1px;
+}
+</string>
+    </property>
+    <property name="text">
+     <string>Organization Messages</string>
+    </property>
+   </widget>
+   <widget class="Line" name="line">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>40</y>
+      <width>791</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

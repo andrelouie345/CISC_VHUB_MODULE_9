@@ -324,41 +324,6 @@
      <string>DELETE</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="btn_del_2">
-    <property name="geometry">
-     <rect>
-      <x>40</x>
-      <y>40</y>
-      <width>81</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">#btn_del {
-    color: #c62828;              /* Red text color */
-    border-radius: 4px;          /* Rounded corners */
-    padding: 4px 12px;           /* Reduced padding for better fit */
-    font-family: &quot;Segoe UI&quot;;     /* Modern font */
-    font-size: 12px;
-    font-weight: 600;
-    transition: all 0.2s ease;   /* Smooth hover transition */
-}
-
-#btn_del:hover {
-    background-color: #FF5C00;  /* Red hover background */
-    color: #ffffff;             /* White text on hover */
-}
-
-#btn_del:pressed {
-    background-color: #8e1c1c;  /* Darker red when pressed */
-    border-color: #8e1c1c;
-}
-</string>
-    </property>
-    <property name="text">
-     <string>DELETE</string>
-    </property>
-   </widget>
   </widget>
   <widget class="Line" name="line_10">
    <property name="geometry">
